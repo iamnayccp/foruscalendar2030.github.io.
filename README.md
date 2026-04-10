@@ -1,1 +1,909 @@
-# foruscalendar2030.github.io.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forus Post-2030 — Campaign Calendar</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+  :root {
+    --forus-green: #bdcd31;
+    --forus-teal: #58c4c6;
+    --forus-red: #ed1550;
+    --forus-dark: #01424d;
+    --forus-mint: #12a082;
+    --bg: #FFFFFF;
+    --surface: #F8F8F8;
+    --card: #FFFFFF;
+    --border: #E5E5E5;
+    --text: #111111;
+    --muted: #555555;
+    --strategy-bg: #E8F5E9;
+    --strategy-border: #A5D6A7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--forus-dark) 0%, #023b47 100%);
+    padding: 30px 60px;
+    border-bottom: 4px solid var(--forus-green);
+  }
+
+  .header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .logo-block h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    letter-spacing: 3px;
+    line-height: 1;
+    color: white;
+  }
+
+  .logo-block h1 span {
+    color: var(--forus-green);
+  }
+
+  .vision-container {
+    margin: 20px 0 16px 0;
+    background: rgba(255,255,255,0.08);
+    padding: 20px 24px;
+    border-radius: 12px;
+    border-left: 5px solid var(--forus-green);
+  }
+
+  .vision-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    color: var(--forus-green);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .vision-statement {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    line-height: 1.5;
+  }
+
+  .vision-statement.en, .vision-statement.es, .vision-statement.fr, .vision-statement.pt {
+    display: none;
+  }
+  .vision-statement.en { display: block; }
+
+  .logo-block p {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 8px;
+  }
+
+  .lang-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .lang-btn {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    padding: 8px 18px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 30px;
+    color: white;
+    transition: all 0.2s;
+  }
+
+  .lang-btn.active {
+    background: var(--forus-green);
+    color: var(--forus-dark);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: rgba(255,255,255,0.3);
+  }
+
+  nav {
+    background: white;
+    padding: 0 60px;
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--border);
+    overflow-x: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  nav button {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 16px 20px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+  }
+
+  nav button:hover { color: var(--forus-dark); }
+  nav button.active { color: var(--forus-red); border-bottom-color: var(--forus-red); }
+
+  main {
+    padding: 48px 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 3px;
+    color: var(--forus-dark);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--forus-green);
+  }
+
+  .section-title.en, .section-title.es, .section-title.fr, .section-title.pt {
+    display: none;
+  }
+  .section-title.en { display: block; }
+
+  .week-strategy {
+    background: var(--strategy-bg);
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    border-radius: 12px;
+    border-left: 4px solid var(--strategy-border);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .week-strategy.en, .week-strategy.es, .week-strategy.fr, .week-strategy.pt {
+    display: none;
+  }
+  .week-strategy.en { display: block; }
+
+  .week-strategy strong {
+    color: var(--forus-dark);
+    font-size: 16px;
+  }
+
+  .week-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 12px;
+    font-size: 13px;
+  }
+
+  .week-links a {
+    color: var(--forus-teal);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .week-links a:hover {
+    text-decoration: underline;
+  }
+
+  .week-block {
+    background: var(--surface);
+    border-left: 6px solid;
+    padding: 0;
+    margin-bottom: 40px;
+    border-radius: 8px;
+  }
+
+  .week-block.week1 { border-left-color: var(--forus-green); }
+  .week-block.week2 { border-left-color: var(--forus-teal); }
+  .week-block.week3 { border-left-color: var(--forus-mint); }
+  .week-block.week4 { border-left-color: var(--forus-dark); }
+  .week-block.week5 { border-left-color: var(--forus-red); }
+
+  .week-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    padding: 20px 24px 8px 24px;
+    color: var(--forus-dark);
+    letter-spacing: 2px;
+  }
+
+  .week-title.en, .week-title.es, .week-title.fr, .week-title.pt {
+    display: none;
+  }
+  .week-title.en { display: block; }
+
+  .post-item {
+    background: white;
+    margin: 12px 20px 20px 20px;
+    padding: 20px 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+  }
+
+  .post-header {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .post-date {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--forus-dark);
+  }
+
+  .post-type {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .post-type.defend { background: rgba(189,205,49,0.15); color: var(--forus-green); }
+  .post-type.demand { background: rgba(88,196,198,0.15); color: var(--forus-teal); }
+  .post-type.decline { background: rgba(237,21,80,0.1); color: var(--forus-red); }
+  .post-type.event { background: rgba(1,66,77,0.08); color: var(--forus-dark); }
+  .post-type.promo { background: rgba(18,160,130,0.08); color: var(--forus-mint); }
+
+  .post-format {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .post-headline {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--forus-dark);
+    margin: 16px 0 12px 0;
+    line-height: 1.3;
+  }
+
+  .post-headline.en, .post-headline.es, .post-headline.fr, .post-headline.pt {
+    display: none;
+  }
+  .post-headline.en { display: block; }
+
+  .post-caption {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .post-caption.en, .post-caption.es, .post-caption.fr, .post-caption.pt {
+    display: none;
+  }
+  .post-caption.en { display: block; }
+
+  .post-caption strong {
+    color: var(--forus-dark);
+  }
+
+  .post-hashtags {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--forus-teal);
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .scenarios-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .scenario-card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border-top: 6px solid;
+  }
+  .scenario-card.continuity { border-top-color: var(--forus-green); }
+  .scenario-card.reset { border-top-color: var(--forus-teal); }
+  .scenario-card.fragmentation { border-top-color: var(--forus-red); }
+  .scenario-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; margin-bottom: 16px; }
+  .scenario-card.continuity .scenario-title { color: var(--forus-green); }
+  .scenario-card.reset .scenario-title { color: var(--forus-teal); }
+  .scenario-card.fragmentation .scenario-title { color: var(--forus-red); }
+  .scenario-desc { font-size: 15px; color: #444; line-height: 1.6; }
+  .scenario-desc.en, .scenario-desc.es, .scenario-desc.fr, .scenario-desc.pt { display: none; }
+  .scenario-desc.en { display: block; }
+
+  .resources-box {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 48px;
+  }
+  .resources-box p { margin-bottom: 14px; font-size: 15px; }
+  .resources-box a { color: var(--forus-teal); text-decoration: none; font-weight: 600; }
+  .resources-box a:hover { text-decoration: underline; }
+
+  .media-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .media-card {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid var(--border);
+  }
+  .media-icon { font-size: 56px; margin-bottom: 16px; }
+  .media-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--forus-dark); margin-bottom: 12px; }
+  .media-placeholder { background: var(--surface); padding: 40px; border-radius: 12px; color: var(--muted); margin-top: 16px; }
+
+  .hashtags-block { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+  .hashtags-block span { font-family: 'Space Mono', monospace; font-size: 11px; background: rgba(189,205,49,0.12); padding: 6px 14px; border-radius: 30px; color: var(--forus-dark); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  @media (max-width: 900px) {
+    header, nav, main { padding-left: 20px; padding-right: 20px; }
+    .scenarios-grid, .media-grid { grid-template-columns: 1fr; }
+    .vision-statement { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-content">
+    <div class="logo-block">
+      <h1>FORUS <span>POST-2030</span></h1>
+      <div class="vision-container">
+        <div class="vision-label">✦ VISION ✦</div>
+        <div class="vision-statement en">An ambitious post-2030 global development framework rooted in human rights, universality and justice; responsive to today's interconnected crises; backed by credible financing and accountability; and shaped through meaningful civil society participation, with greater power for local actors.</div>
+        <div class="vision-statement es">Un marco ambicioso de desarrollo global post-2030 basado en derechos humanos, universalidad y justicia; receptivo a las crisis interconectadas actuales; respaldado por financiamiento creíble y rendición de cuentas; y configurado a través de una participación significativa de la sociedad civil, con mayor poder para los actores locales.</div>
+        <div class="vision-statement fr">Un cadre ambitieux de développement mondial post-2030 ancré dans les droits humains, l'universalité et la justice ; réactif aux crises interconnectées d'aujourd'hui ; soutenu par un financement crédible et une responsabilité ; et façonné par une participation significative de la société civile, avec plus de pouvoir pour les acteurs locaux.</div>
+        <div class="vision-statement pt">Um quadro ambicioso de desenvolvimento global pós-2030 enraizado nos direitos humanos, universalidade e justiça; responsivo às crises interconectadas atuais; apoiado por financiamento crível e responsabilização; e moldado através da participação significativa da sociedade civil, com maior poder para os atores locais.</div>
+      </div>
+      <p class="campaign-subtitle en">Campaign Calendar · April–May 2026</p>
+      <p class="campaign-subtitle es" style="display:none;">Calendario de Campaña · Abril–Mayo 2026</p>
+      <p class="campaign-subtitle fr" style="display:none;">Calendrier de Campagne · Avril–Mai 2026</p>
+      <p class="campaign-subtitle pt" style="display:none;">Calendário da Campanha · Abril–Maio 2026</p>
+    </div>
+    <div class="lang-buttons">
+      <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn" onclick="setLanguage('es')">ES</button>
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('pt')">PT</button>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <button class="active" onclick="showTab('week1')"><span class="nav-week1-en">📅 Week 1 · Apr 14-20</span><span class="nav-week1-es" style="display:none;">📅 Semana 1 · 14-20 Abr</span><span class="nav-week1-fr" style="display:none;">📅 Semaine 1 · 14-20 Avr</span><span class="nav-week1-pt" style="display:none;">📅 Semana 1 · 14-20 Abr</span></button>
+  <button onclick="showTab('week2')"><span class="nav-week2-en">📅 Week 2 · Apr 21-27</span><span class="nav-week2-es" style="display:none;">📅 Semana 2 · 21-27 Abr</span><span class="nav-week2-fr" style="display:none;">📅 Semaine 2 · 21-27 Avr</span><span class="nav-week2-pt" style="display:none;">📅 Semana 2 · 21-27 Abr</span></button>
+  <button onclick="showTab('week3')"><span class="nav-week3-en">📅 Week 3 · Apr 28-May 4</span><span class="nav-week3-es" style="display:none;">📅 Semana 3 · 28 Abr-4 May</span><span class="nav-week3-fr" style="display:none;">📅 Semaine 3 · 28 Avr-4 Mai</span><span class="nav-week3-pt" style="display:none;">📅 Semana 3 · 28 Abr-4 Mai</span></button>
+  <button onclick="showTab('week4')"><span class="nav-week4-en">📅 Week 4 · May 5-11</span><span class="nav-week4-es" style="display:none;">📅 Semana 4 · 5-11 May</span><span class="nav-week4-fr" style="display:none;">📅 Semaine 4 · 5-11 Mai</span><span class="nav-week4-pt" style="display:none;">📅 Semana 4 · 5-11 Mai</span></button>
+  <button onclick="showTab('week5')"><span class="nav-week5-en">📅 Week 5 · May 12-15</span><span class="nav-week5-es" style="display:none;">📅 Semana 5 · 12-15 May</span><span class="nav-week5-fr" style="display:none;">📅 Semaine 5 · 12-15 Mai</span><span class="nav-week5-pt" style="display:none;">📅 Semana 5 · 12-15 Mai</span></button>
+  <button onclick="showTab('scenarios')"><span class="nav-scenarios-en">🔮 3 Scenarios</span><span class="nav-scenarios-es" style="display:none;">🔮 3 Escenarios</span><span class="nav-scenarios-fr" style="display:none;">🔮 3 Scénarios</span><span class="nav-scenarios-pt" style="display:none;">🔮 3 Cenários</span></button>
+  <button onclick="showTab('resources')"><span class="nav-resources-en">🔗 Resources</span><span class="nav-resources-es" style="display:none;">🔗 Recursos</span><span class="nav-resources-fr" style="display:none;">🔗 Ressources</span><span class="nav-resources-pt" style="display:none;">🔗 Recursos</span></button>
+  <button onclick="showTab('media')"><span class="nav-media-en">🎙️ Podcast & Video</span><span class="nav-media-es" style="display:none;">🎙️ Podcast y Video</span><span class="nav-media-fr" style="display:none;">🎙️ Podcast et Vidéo</span><span class="nav-media-pt" style="display:none;">🎙️ Podcast e Vídeo</span></button>
+</nav>
+
+<main>
+
+<!-- ========== WEEK 1 ========== -->
+<div id="week1" class="tab-content active">
+  <div class="section-title en">📅 Week 1 · April 14–20, 2026</div>
+  <div class="section-title es" style="display:none;">📅 Semana 1 · 14–20 de abril de 2026</div>
+  <div class="section-title fr" style="display:none;">📅 Semaine 1 · 14–20 avril 2026</div>
+  <div class="section-title pt" style="display:none;">📅 Semana 1 · 14–20 de abril de 2026</div>
+  
+  <div class="week-strategy en"><strong>🇺🇳 Launch: Why Post-2030 Matters?</strong><br>We kick off the campaign by presenting the urgent context: the SDGs are expiring and the world needs a new agenda. We connect our audience with FORUS' vision — defending rights, universality and civic space.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Campaign Hub</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Event Registration</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy es" style="display:none;"><strong>🇺🇳 Lanzamiento: ¿Por qué importa el Post-2030?</strong><br>Arrancamos la campaña presentando el contexto urgente: los ODS están por vencer y el mundo necesita una nueva agenda. Conectamos a nuestra audiencia con la visión de FORUS — defender derechos, universalidad y espacio cívico.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub de Campaña</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Registro del Evento</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy fr" style="display:none;"><strong>🇺🇳 Lancement : Pourquoi le Post-2030 est important ?</strong><br>Nous lançons la campagne en présentant le contexte urgent : les ODD expirent et le monde a besoin d'un nouvel agenda. Nous connectons notre public avec la vision de FORUS — défendre les droits, l'universalité et l'espace civique.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub Campagne</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Inscription</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy pt" style="display:none;"><strong>🇺🇳 Lançamento: Por que o Pós-2030 é importante?</strong><br>Iniciamos a campanha apresentando o contexto urgente: os ODS estão expirando e o mundo precisa de uma nova agenda. Conectamos nosso público com a visão da FORUS — defender direitos, universalidade e espaço cívico.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub da Campanha</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Inscrição</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+
+  <div class="week-block week1">
+    <div class="week-title en">🇺🇳 OPENING · THE CAMPAIGN BEGINS</div>
+    <div class="week-title es" style="display:none;">🇺🇳 APERTURA · COMIENZA LA CAMPAÑA</div>
+    <div class="week-title fr" style="display:none;">🇺🇳 OUVERTURE · LA CAMPAGNE COMMENCE</div>
+    <div class="week-title pt" style="display:none;">🇺🇳 ABERTURA · A CAMPANHA COMEÇA</div>
+    
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">Apr 14</span><span class="post-type promo">OPENING</span><span class="post-format">📽️ Short motion teaser</span></div>
+      <div class="post-headline en">Something important is coming.</div>
+      <div class="post-headline es" style="display:none;">Algo importante se acerca.</div>
+      <div class="post-headline fr" style="display:none;">Quelque chose d'important arrive.</div>
+      <div class="post-headline pt" style="display:none;">Algo importante está chegando.</div>
+      <div class="post-caption en">The debate on what comes after 2030 is already underway — and civil society cannot arrive late. In the coming weeks, Forus will launch a new political vision for the post-2030 agenda: what must be defended, what must change, and what must not be lost. <strong>Stay with us.</strong><br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #CivilSociety</span></div>
+      <div class="post-caption es" style="display:none;">El debate sobre lo que viene después de 2030 ya está en marcha — y la sociedad civil no puede llegar tarde. En las próximas semanas, Forus lanzará una nueva visión política para la agenda post-2030: lo que debe defenderse, lo que debe cambiar y lo que no debe perderse. <strong>Quédense con nosotros.</strong><br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #SociedadCivil</span></div>
+      <div class="post-caption fr" style="display:none;">Le débat sur l'après-2030 est déjà en cours — et la société civile ne peut pas arriver en retard. Dans les semaines à venir, Forus lancera une nouvelle vision politique pour l'agenda post-2030 : ce qui doit être défendu, ce qui doit changer et ce qui ne doit pas être perdu. <strong>Restez avec nous.</strong><br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #SociétéCivile</span></div>
+      <div class="post-caption pt" style="display:none;">O debate sobre o que vem depois de 2030 já está em curso — e a sociedade civil não pode chegar atrasada. Nas próximas semanas, a Forus lançará uma nova visão política para a agenda pós-2030: o que deve ser defendido, o que deve mudar e o que não pode ser perdido. <strong>Fique conosco.</strong><br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #SociedadeCivil</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">Apr 15</span><span class="post-type event">SAVE THE DATE</span><span class="post-format">📅 Event card</span></div>
+      <div class="post-headline en">Save the date: 14 May 2026 | 13:00 UTC</div>
+      <div class="post-headline es" style="display:none;">Reserva la fecha: 14 de mayo de 2026 | 13:00 UTC</div>
+      <div class="post-headline fr" style="display:none;">À retenir : 14 mai 2026 | 13:00 UTC</div>
+      <div class="post-headline pt" style="display:none;">Guarde a data: 14 de maio de 2026 | 13:00 UTC</div>
+      <div class="post-caption en">Join Forus for the launch of our Post-2030 Vision Paper — a collective civil society vision for what should come after the SDGs. More details and registration coming soon.<br><br><span class="post-hashtags">#ForusPost2030 #SaveTheDate #Post2030</span></div>
+      <div class="post-caption es" style="display:none;">Únete a Forus para el lanzamiento de nuestro Vision Paper Post-2030 — una visión colectiva de la sociedad civil para lo que debería venir después de los ODS. Más detalles y registro próximamente.<br><br><span class="post-hashtags">#ForusPost2030 #ReservaLaFecha #Post2030</span></div>
+      <div class="post-caption fr" style="display:none;">Rejoignez Forus pour le lancement de notre document de vision post-2030 — une vision collective de la société civile pour ce qui devrait venir après les ODD. Plus de détails et inscription à venir.<br><br><span class="post-hashtags">#ForusPost2030 #ÀRetenir #Post2030</span></div>
+      <div class="post-caption pt" style="display:none;">Junte-se à Forus para o lançamento do nosso Documento de Visão Pós-2030 — uma visão coletiva da sociedade civil para o que deve vir após os ODS. Mais detalhes e inscrição em breve.<br><br><span class="post-hashtags">#ForusPost2030 #GuardeAData #Post2030</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">Apr 16</span><span class="post-type defend">DEFEND</span><span class="post-format">💬 Quote card</span></div>
+      <div class="post-headline en">The future after 2030 will not be decided in 2027 alone.</div>
+      <div class="post-headline es" style="display:none;">El futuro después de 2030 no se decidirá solo en 2027.</div>
+      <div class="post-headline fr" style="display:none;">L'avenir après 2030 ne se décidera pas qu'en 2027.</div>
+      <div class="post-headline pt" style="display:none;">O futuro após 2030 não será decidido apenas em 2027.</div>
+      <div class="post-caption en">It is being shaped now — through narratives, alliances, political choices, and decisions about who gets to participate. That is why civil society must engage early, strategically, and collectively.<br><br><span class="post-hashtags">#ForusPost2030 #CivilSociety #Post2030</span></div>
+      <div class="post-caption es" style="display:none;">Se está configurando ahora — a través de narrativas, alianzas, decisiones políticas y quién puede participar. Por eso la sociedad civil debe involucrarse temprano, estratégica y colectivamente.<br><br><span class="post-hashtags">#ForusPost2030 #SociedadCivil #Post2030</span></div>
+      <div class="post-caption fr" style="display:none;">Il se construit maintenant — à travers les récits, les alliances, les choix politiques et les décisions sur qui peut participer. C'est pourquoi la société civile doit s'engager tôt, stratégiquement et collectivement.<br><br><span class="post-hashtags">#ForusPost2030 #SociétéCivile #Post2030</span></div>
+      <div class="post-caption pt" style="display:none;">Está sendo moldado agora — através de narrativas, alianças, escolhas políticas e decisões sobre quem pode participar. É por isso que a sociedade civil deve se envolver cedo, estrategicamente e coletivamente.<br><br><span class="post-hashtags">#ForusPost2030 #SociedadeCivil #Post2030</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">Apr 20</span><span class="post-type defend">DEFEND</span><span class="post-format">🎠 Carousel</span></div>
+      <div class="post-headline en">What must be defended in the post-2030 agenda?</div>
+      <div class="post-headline es" style="display:none;">¿Qué debe defenderse en la agenda post-2030?</div>
+      <div class="post-headline fr" style="display:none;">Que doit-on défendre dans l'agenda post-2030 ?</div>
+      <div class="post-headline pt" style="display:none;">O que deve ser defendido na agenda pós-2030?</div>
+      <div class="post-caption en"><strong>Forus says:</strong> ✓ a universal and rights-based agenda ✓ civic space ✓ local leadership ✓ multilateralism ✓ the core promise to leave no one behind.<br><br>This is not the moment to step back.<br><br><span class="post-hashtags">#WhatWeDefend #ForusPost2030 #GlobalSolidarity</span></div>
+      <div class="post-caption es" style="display:none;"><strong>Forus dice:</strong> ✓ una agenda universal y basada en derechos ✓ espacio cívico ✓ liderazgo local ✓ multilateralismo ✓ la promesa central de no dejar a nadie atrás.<br><br>Este no es el momento de retroceder.<br><br><span class="post-hashtags">#LoQueDefendemos #ForusPost2030 #SolidaridadGlobal</span></div>
+      <div class="post-caption fr" style="display:none;"><strong>Forus dit :</strong> ✓ un agenda universelle et fondée sur les droits ✓ espace civique ✓ leadership local ✓ multilatéralisme ✓ la promesse de ne laisser personne de côté.<br><br>Ce n'est pas le moment de reculer.<br><br><span class="post-hashtags">#CeQueNousDéfendons #ForusPost2030 #SolidaritéMondiale</span></div>
+      <div class="post-caption pt" style="display:none;"><strong>A Forus diz:</strong> ✓ uma agenda universal e baseada em direitos ✓ espaço cívico ✓ liderança local ✓ multilateralismo ✓ a promessa central de não deixar ninguém para trás.<br><br>Este não é o momento de recuar.<br><br><span class="post-hashtags">#OQueDefendemos #ForusPost2030 #SolidariedadeGlobal</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== WEEK 2 ========== -->
+<div id="week2" class="tab-content">
+  <div class="section-title en">📅 Week 2 · April 21–27, 2026</div>
+  <div class="section-title es" style="display:none;">📅 Semana 2 · 21–27 de abril de 2026</div>
+  <div class="section-title fr" style="display:none;">📅 Semaine 2 · 21–27 avril 2026</div>
+  <div class="section-title pt" style="display:none;">📅 Semana 2 · 21–27 de abril de 2026</div>
+  
+  <div class="week-strategy en"><strong>⚡ What We Defend: Rights, Multilateralism and Civic Space</strong><br>We highlight the achievements of the SDG era that we cannot lose: human rights, multilateralism, local leadership and civic space as a public good. Core message: these principles are non-negotiable.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Campaign Hub</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Event Registration</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy es" style="display:none;"><strong>⚡ Lo que defendemos: derechos, multilateralismo y espacio cívico</strong><br>Destacamos los logros del período SDG que no podemos perder: derechos humanos, multilateralismo, liderazgo local y espacio cívico como bien público. Mensaje central: estos principios no son negociables.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub de Campaña</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Registro del Evento</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy fr" style="display:none;"><strong>⚡ Ce que nous défendons : droits, multilatéralisme et espace civique</strong><br>Nous mettons en lumière les réalisations de l'ère ODD que nous ne pouvons pas perdre : droits humains, multilatéralisme, leadership local et espace civique comme bien public. Message central : ces principes ne sont pas négociables.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub Campagne</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Inscription</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy pt" style="display:none;"><strong>⚡ O que defendemos: direitos, multilateralismo e espaço cívico</strong><br>Destacamos as conquistas da era ODS que não podemos perder: direitos humanos, multilateralismo, liderança local e espaço cívico como bem público. Mensagem central: esses princípios são inegociáveis.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub da Campanha</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Inscrição</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+
+  <div class="week-block week2">
+    <div class="week-title en">⚡ WHAT WE DEMAND · WHAT WE DECLINE</div>
+    <div class="week-title es" style="display:none;">⚡ LO QUE EXIGIMOS · LO QUE RECHAZAMOS</div>
+    <div class="week-title fr" style="display:none;">⚡ CE QUE NOUS EXIGEONS · CE QUE NOUS REFUSONS</div>
+    <div class="week-title pt" style="display:none;">⚡ O QUE EXIGIMOS · O QUE RECUSAMOS</div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">Apr 21</span><span class="post-type demand">DEMAND</span><span class="post-format">🎠 Carousel</span></div>
+      <div class="post-headline en">What must change?</div>
+      <div class="post-headline es" style="display:none;">¿Qué debe cambiar?</div>
+      <div class="post-headline fr" style="display:none;">Que doit changer ?</div>
+      <div class="post-headline pt" style="display:none;">O que deve mudar?</div>
+      <div class="post-caption en"><strong>Forus calls for</strong> a post-2030 framework that is more credible, more accountable, and more grounded in justice. That means stronger financing reform, real accountability, meaningful civil society participation, and greater power for local actors.<br><br><span class="post-hashtags">#WhatWeDemand #ForusPost2030 #Accountability #Localisation</span></div>
+      <div class="post-caption es" style="display:none;"><strong>Forus exige</strong> un marco post-2030 más creíble, más responsable y más basado en la justicia. Eso significa reforma financiera más fuerte, rendición de cuentas real, participación significativa de la sociedad civil y más poder para los actores locales.<br><br><span class="post-hashtags">#LoQueExigimos #ForusPost2030 #RendiciónDeCuentas #Localización</span></div>
+      <div class="post-caption fr" style="display:none;"><strong>Forus demande</strong> un cadre post-2030 plus crédible, plus responsable et plus ancré dans la justice. Cela signifie une réforme financière plus forte, une véritable reddition de comptes, une participation significative de la société civile et plus de pouvoir pour les acteurs locaux.<br><br><span class="post-hashtags">#CeQueNousExigeons #ForusPost2030 #RedditionDeComptes #Localisation</span></div>
+      <div class="post-caption pt" style="display:none;"><strong>A Forus exige</strong> um marco pós-2030 mais crível, mais responsável e mais baseado na justiça. Isso significa reforma financeira mais forte, responsabilização real, participação significativa da sociedade civil e mais poder para os atores locais.<br><br><span class="post-hashtags">#OQueExigimos #ForusPost2030 #Responsabilização #Localização</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">Apr 22</span><span class="post-type decline">DECLINE</span><span class="post-format">🎠 Carousel</span></div>
+      <div class="post-headline en">What must not be lost — and what must be declined?</div>
+      <div class="post-headline es" style="display:none;">Qué no debe perderse — y qué debe rechazarse</div>
+      <div class="post-headline fr" style="display:none;">Ce qui ne doit pas être perdu — et ce qui doit être refusé</div>
+      <div class="post-headline pt" style="display:none;">O que não pode ser perdido — e o que deve ser recusado</div>
+      <div class="post-caption en">We reject a watered-down framework that sacrifices rights, universality, accountability, civic freedoms, or climate ambition for political convenience. <strong>The next framework must not be smaller, weaker, or more selective.</strong><br><br><span class="post-hashtags">#WhatWeDecline #ForusPost2030 #RightsBasedApproach</span></div>
+      <div class="post-caption es" style="display:none;">Rechazamos un marco diluido que sacrifique derechos, universalidad, rendición de cuentas, libertades cívicas o ambición climática por conveniencia política. <strong>El próximo marco no debe ser más pequeño, más débil o más selectivo.</strong><br><br><span class="post-hashtags">#LoQueRechazamos #ForusPost2030 #EnfoqueBasadoEnDerechos</span></div>
+      <div class="post-caption fr" style="display:none;">Nous refusons un cadre édulcoré qui sacrifie les droits, l'universalité, la responsabilité, les libertés civiques ou l'ambition climatique pour des raisons de commodité politique. <strong>Le prochain cadre ne doit pas être plus petit, plus faible ou plus sélectif.</strong><br><br><span class="post-hashtags">#CeQueNousRefusons #ForusPost2030 #ApprocheBaséeSurLesDroits</span></div>
+      <div class="post-caption pt" style="display:none;">Recusamos um marco enfraquecido que sacrifique direitos, universalidade, responsabilização, liberdades cívicas ou ambição climática por conveniência política. <strong>O próximo marco não pode ser menor, mais fraco ou mais seletivo.</strong><br><br><span class="post-hashtags">#OQueRecusamos #ForusPost2030 #AbordagemBaseadaEmDireitos</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">Apr 23</span><span class="post-type promo">SCENARIOS</span><span class="post-format">📊 Infographic / card</span></div>
+      <div class="post-headline en">The post-2030 process could evolve in 3 ways</div>
+      <div class="post-headline es" style="display:none;">El proceso post-2030 podría evolucionar de 3 maneras</div>
+      <div class="post-headline fr" style="display:none;">Le processus post-2030 pourrait évoluer de 3 manières</div>
+      <div class="post-headline pt" style="display:none;">O processo pós-2030 pode evoluir de 3 maneiras</div>
+      <div class="post-caption en"><strong>🟢 Continuity</strong> — the most likely baseline<br><strong>🔵 Reset</strong> — the most ambitious horizon<br><strong>🔴 Fragmentation</strong> — the constant risk<br><br>Forus' vision is built to stay politically relevant across all three.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #CivilSociety</span></div>
+      <div class="post-caption es" style="display:none;"><strong>🟢 Continuidad</strong> — el escenario base más probable<br><strong>🔵 Reinicio</strong> — el horizonte más ambicioso<br><strong>🔴 Fragmentación</strong> — el riesgo constante<br><br>La visión de Forus está construida para ser políticamente relevante en los tres.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #SociedadCivil</span></div>
+      <div class="post-caption fr" style="display:none;"><strong>🟢 Continuité</strong> — le scénario de base le plus probable<br><strong>🔵 Remise à zéro</strong> — l'horizon le plus ambitieux<br><strong>🔴 Fragmentation</strong> — le risque constant<br><br>La vision de Forus est conçue pour rester politiquement pertinente dans les trois.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #SociétéCivile</span></div>
+      <div class="post-caption pt" style="display:none;"><strong>🟢 Continuidade</strong> — o cenário base mais provável<br><strong>🔵 Reinício</strong> — o horizonte mais ambicioso<br><strong>🔴 Fragmentação</strong> — o risco constante<br><br>A visão da Forus é construída para permanecer politicamente relevante em todos os três.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #SociedadeCivil</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== WEEK 3 ========== -->
+<div id="week3" class="tab-content">
+  <div class="section-title en">📅 Week 3 · April 28–May 4, 2026</div>
+  <div class="section-title es" style="display:none;">📅 Semana 3 · 28 de abril–4 de mayo de 2026</div>
+  <div class="section-title fr" style="display:none;">📅 Semaine 3 · 28 avril–4 mai 2026</div>
+  <div class="section-title pt" style="display:none;">📅 Semana 3 · 28 de abril–4 de maio de 2026</div>
+  
+  <div class="week-strategy en"><strong>🌍 What We Demand: Fair Finance and Real Accountability</strong><br>We focus the campaign on concrete demands: financing reform, debt restructuring, tax justice and binding accountability mechanisms with civil society participation.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Campaign Hub</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Event Registration</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy es" style="display:none;"><strong>🌍 Lo que exigimos: finanzas justas y rendición de cuentas real</strong><br>Enfocamos la campaña en las demandas concretas: reforma del financiamiento, reestructuración de deuda, justicia fiscal y mecanismos de rendición de cuentas obligatorios con participación de la sociedad civil.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub de Campaña</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Registro del Evento</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy fr" style="display:none;"><strong>🌍 Ce que nous exigeons : financement équitable et responsabilité réelle</strong><br>Nous concentrons la campagne sur des demandes concrètes : réforme du financement, restructuration de la dette, justice fiscale et mécanismes de responsabilité contraignants avec participation de la société civile.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub Campagne</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Inscription</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy pt" style="display:none;"><strong>🌍 O que exigimos: finanças justas e responsabilização real</strong><br>Focamos a campanha em demandas concretas: reforma do financiamento, reestruturação da dívida, justiça fiscal e mecanismos de responsabilização vinculativos com participação da sociedade civil.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub da Campanha</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Inscrição</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+
+  <div class="week-block week3">
+    <div class="week-title en">🌍 SAVE THE DATE · WHY FORUS MATTERS</div>
+    <div class="week-title es" style="display:none;">🌍 RESERVA LA FECHA · POR QUÉ FORUS IMPORTA</div>
+    <div class="week-title fr" style="display:none;">🌍 À RETENIR · POURQUOI FORUS COMPTE</div>
+    <div class="week-title pt" style="display:none;">🌍 GUARDE A DATA · POR QUE A FORUS IMPORTA</div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">Apr 28</span><span class="post-type event">SAVE THE DATE</span><span class="post-format">📅 Event card</span></div>
+      <div class="post-headline en">Save the date: 14 May 2026 | 13:00 UTC</div>
+      <div class="post-headline es" style="display:none;">Reserva la fecha: 14 de mayo de 2026 | 13:00 UTC</div>
+      <div class="post-headline fr" style="display:none;">À retenir : 14 mai 2026 | 13:00 UTC</div>
+      <div class="post-headline pt" style="display:none;">Guarde a data: 14 de maio de 2026 | 13:00 UTC</div>
+      <div class="post-caption en">Join Forus for the launch of our Post-2030 Vision Paper — a collective civil society vision for what should come after the SDGs. More details and registration coming soon.<br><br><span class="post-hashtags">#ForusPost2030 #SaveTheDate #Post2030</span></div>
+      <div class="post-caption es" style="display:none;">Únete a Forus para el lanzamiento de nuestro Vision Paper Post-2030 — una visión colectiva de la sociedad civil para lo que debería venir después de los ODS. Más detalles y registro próximamente.<br><br><span class="post-hashtags">#ForusPost2030 #ReservaLaFecha #Post2030</span></div>
+      <div class="post-caption fr" style="display:none;">Rejoignez Forus pour le lancement de notre document de vision post-2030 — une vision collective de la société civile pour ce qui devrait venir après les ODD. Plus de détails et inscription à venir.<br><br><span class="post-hashtags">#ForusPost2030 #ÀRetenir #Post2030</span></div>
+      <div class="post-caption pt" style="display:none;">Junte-se à Forus para o lançamento do nosso Documento de Visão Pós-2030 — uma visão coletiva da sociedade civil para o que deve vir após os ODS. Mais detalhes e inscrição em breve.<br><br><span class="post-hashtags">#ForusPost2030 #GuardeAData #Post2030</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">Apr 30</span><span class="post-type defend">DEFEND</span><span class="post-format">🌐 Network visual</span></div>
+      <div class="post-headline en">This vision comes from a global civil society network</div>
+      <div class="post-headline es" style="display:none;">Esta visión proviene de una red global de sociedad civil</div>
+      <div class="post-headline fr" style="display:none;">Cette vision vient d'un réseau mondial de la société civile</div>
+      <div class="post-headline pt" style="display:none;">Esta visão vem de uma rede global da sociedade civil</div>
+      <div class="post-caption en"><strong>74 National NGO Platforms and 8 Regional Coalitions, representing over 24,000 NGOs.</strong><br><br>It is grounded in collective reflection, lived realities, and the voices of those too often pushed to the margins of global agenda-setting.<br><br><span class="post-hashtags">#ForusPost2030 #CivilSociety #24kNGOs</span></div>
+      <div class="post-caption es" style="display:none;"><strong>74 Plataformas Nacionales de ONG y 8 Coaliciones Regionales, que representan a más de 24,000 ONG.</strong><br><br>Se basa en la reflexión colectiva, las realidades vividas y las voces de quienes a menudo son empujados a los márgenes de la configuración de la agenda global.<br><br><span class="post-hashtags">#ForusPost2030 #SociedadCivil #24kONGs</span></div>
+      <div class="post-caption fr" style="display:none;"><strong>74 plates-formes nationales d'ONG et 8 coalitions régionales, représentant plus de 24 000 ONG.</strong><br><br>Elle est ancrée dans une réflexion collective, des réalités vécues et les voix de ceux trop souvent poussés à la marge de l'élaboration de l'agenda mondial.<br><br><span class="post-hashtags">#ForusPost2030 #SociétéCivile #24kONGs</span></div>
+      <div class="post-caption pt" style="display:none;"><strong>74 Plataformas Nacionais de ONGs e 8 Coalizões Regionais, representando mais de 24.000 ONGs.</strong><br><br>Está enraizada na reflexão coletiva, nas realidades vividas e nas vozes daqueles muitas vezes empurrados para as margens da definição da agenda global.<br><br><span class="post-hashtags">#ForusPost2030 #SociedadeCivil #24kONGs</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">May 2</span><span class="post-type demand">DEMAND</span><span class="post-format">📄 Text-forward visual</span></div>
+      <div class="post-headline en">The post-2030 conversation is not only about future goals.</div>
+      <div class="post-headline es" style="display:none;">La conversación post-2030 no es solo sobre metas futuras.</div>
+      <div class="post-headline fr" style="display:none;">La conversation post-2030 ne concerne pas seulement les objectifs futurs.</div>
+      <div class="post-headline pt" style="display:none;">A conversa pós-2030 não é apenas sobre metas futuras.</div>
+      <div class="post-caption en">It is also about participation, accountability, financing, and the political values that will shape international cooperation in the years ahead.<br><br>Forus is launching a collective civil society vision on what must be defended, demanded, and declined as this debate unfolds.<br><br>We look forward to engaging governments, UN actors, donors, partners, and civil society allies.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #Accountability #GlobalSolidarity</span></div>
+      <div class="post-caption es" style="display:none;">También se trata de participación, rendición de cuentas, financiamiento y los valores políticos que moldearán la cooperación internacional en los próximos años.<br><br>Forus está lanzando una visión colectiva de la sociedad civil sobre lo que debe defenderse, exigirse y rechazarse a medida que se desarrolla este debate.<br><br>Esperamos involucrar a gobiernos, actores de la ONU, donantes, socios y aliados de la sociedad civil.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #RendiciónDeCuentas #SolidaridadGlobal</span></div>
+      <div class="post-caption fr" style="display:none;">Il s'agit aussi de participation, de responsabilité, de financement et des valeurs politiques qui façonneront la coopération internationale dans les années à venir.<br><br>Forus lance une vision collective de la société civile sur ce qui doit être défendu, exigé et refusé alors que ce débat se déroule.<br><br>Nous sommes impatients d'engager les gouvernements, les acteurs de l'ONU, les donateurs, les partenaires et les alliés de la société civile.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #RedditionDeComptes #SolidaritéMondiale</span></div>
+      <div class="post-caption pt" style="display:none;">Trata-se também de participação, responsabilização, financiamento e os valores políticos que moldarão a cooperação internacional nos próximos anos.<br><br>A Forus está lançando uma visão coletiva da sociedade civil sobre o que deve ser defendido, exigido e recusado à medida que este debate se desenrola.<br><br>Esperamos engajar governos, atores da ONU, doadores, parceiros e aliados da sociedade civil.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #Responsabilização #SolidariedadeGlobal</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== WEEK 4 ========== -->
+<div id="week4" class="tab-content">
+  <div class="section-title en">📅 Week 4 · May 5–11, 2026</div>
+  <div class="section-title es" style="display:none;">📅 Semana 4 · 5–11 de mayo de 2026</div>
+  <div class="section-title fr" style="display:none;">📅 Semaine 4 · 5–11 mai 2026</div>
+  <div class="section-title pt" style="display:none;">📅 Semana 4 · 5–11 de maio de 2026</div>
+  
+  <div class="week-strategy en"><strong>🎙️ Voices of the Network: Civil Society Speaks</strong><br>We give voice to members, youth and allies. We open event registration and reinforce the collective message: this debate is not just about goals, but about values, power and participation.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Campaign Hub</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Event Registration</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy es" style="display:none;"><strong>🎙️ Voces de la red: la sociedad civil habla</strong><br>Damos protagonismo a voces de miembros, jóvenes y aliados. Abrimos el registro al evento y reforzamos el mensaje colectivo: este debate no es solo sobre metas, sino sobre valores, poder y participación.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub de Campaña</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Registro del Evento</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy fr" style="display:none;"><strong>🎙️ Voix du réseau : la société civile parle</strong><br>Nous donnons la parole aux membres, aux jeunes et aux alliés. Nous ouvrons l'inscription à l'événement et renforçons le message collectif : ce débat ne concerne pas seulement les objectifs, mais aussi les valeurs, le pouvoir et la participation.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub Campagne</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Inscription</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy pt" style="display:none;"><strong>🎙️ Vozes da rede: a sociedade civil fala</strong><br>Damos voz a membros, jovens e aliados. Abrimos a inscrição para o evento e reforçamos a mensagem coletiva: este debate não é apenas sobre metas, mas sobre valores, poder e participação.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub da Campanha</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Inscrição</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+
+  <div class="week-block week4">
+    <div class="week-title en">🎙️ MEMBER VOICES · YOUTH · REGISTRATION OPEN</div>
+    <div class="week-title es" style="display:none;">🎙️ VOCES DE MIEMBROS · JUVENTUD · REGISTRO ABIERTO</div>
+    <div class="week-title fr" style="display:none;">🎙️ VOIX DES MEMBRES · JEUNESSE · INSCRIPTIONS OUVERTES</div>
+    <div class="week-title pt" style="display:none;">🎙️ VOZES DOS MEMBROS · JUVENTUDE · INSCRIÇÕES ABERTAS</div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">May 5</span><span class="post-type defend">DEFEND</span><span class="post-format">🎙️ Quote / video clip</span></div>
+      <div class="post-headline en">"The struggle over the post-2030 agenda is not only about goals and targets."</div>
+      <div class="post-headline es" style="display:none;">"La lucha por la agenda post-2030 no es solo sobre metas y objetivos."</div>
+      <div class="post-headline fr" style="display:none;">"La lutte pour l'agenda post-2030 ne concerne pas seulement les buts et objectifs."</div>
+      <div class="post-headline pt" style="display:none;">"A luta pela agenda pós-2030 não é apenas sobre metas e objetivos."</div>
+      <div class="post-caption en">It is also about political space, accountability, and the values that will shape international cooperation. <strong>The conversation is bigger than a report. It is about the future we are willing to defend.</strong><br><br><span class="post-hashtags">#ForusPost2030 #CivilSociety #Accountability</span></div>
+      <div class="post-caption es" style="display:none;">También se trata del espacio político, la rendición de cuentas y los valores que moldearán la cooperación internacional. <strong>La conversación es más grande que un informe. Se trata del futuro que estamos dispuestos a defender.</strong><br><br><span class="post-hashtags">#ForusPost2030 #SociedadCivil #RendiciónDeCuentas</span></div>
+      <div class="post-caption fr" style="display:none;">Il s'agit aussi d'espace politique, de responsabilité et des valeurs qui façonneront la coopération internationale. <strong>La conversation est plus grande qu'un rapport. Il s'agit de l'avenir que nous sommes prêts à défendre.</strong><br><br><span class="post-hashtags">#ForusPost2030 #SociétéCivile #RedditionDeComptes</span></div>
+      <div class="post-caption pt" style="display:none;">Trata-se também de espaço político, responsabilização e dos valores que moldarão a cooperação internacional. <strong>A conversa é maior do que um relatório. Trata-se do futuro que estamos dispostos a defender.</strong><br><br><span class="post-hashtags">#ForusPost2030 #SociedadeCivil #Responsabilização</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">May 6</span><span class="post-type demand">DEMAND</span><span class="post-format">🎙️ Quote / video clip</span></div>
+      <div class="post-headline en">What kind of future should the next global development framework protect?</div>
+      <div class="post-headline es" style="display:none;">¿Qué tipo de futuro debería proteger el próximo marco global de desarrollo?</div>
+      <div class="post-headline fr" style="display:none;">Quel type d'avenir le prochain cadre mondial de développement devrait-il protéger ?</div>
+      <div class="post-headline pt" style="display:none;">Que tipo de futuro o próximo quadro global de desenvolvimento deve proteger?</div>
+      <div class="post-caption en">This is the question at the heart of the post-2030 debate — and the voices of communities, youth, and local actors must help answer it.<br><br><span class="post-hashtags">#ForusPost2030 #YouthVoices #Localisation #Post2030</span></div>
+      <div class="post-caption es" style="display:none;">Esta es la pregunta en el corazón del debate post-2030 — y las voces de las comunidades, los jóvenes y los actores locales deben ayudar a responderla.<br><br><span class="post-hashtags">#ForusPost2030 #VocesJuveniles #Localización #Post2030</span></div>
+      <div class="post-caption fr" style="display:none;">C'est la question au cœur du débat post-2030 — et les voix des communautés, des jeunes et des acteurs locaux doivent aider à y répondre.<br><br><span class="post-hashtags">#ForusPost2030 #VoixJeunes #Localisation #Post2030</span></div>
+      <div class="post-caption pt" style="display:none;">Esta é a pergunta no centro do debate pós-2030 — e as vozes das comunidades, jovens e atores locais devem ajudar a respondê-la.<br><br><span class="post-hashtags">#ForusPost2030 #VozesJovens #Localização #Post2030</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">May 7</span><span class="post-type event">REGISTER NOW</span><span class="post-format">📢 Event promo card</span></div>
+      <div class="post-headline en">Registration is open.</div>
+      <div class="post-headline es" style="display:none;">El registro está abierto.</div>
+      <div class="post-headline fr" style="display:none;">Les inscriptions sont ouvertes.</div>
+      <div class="post-headline pt" style="display:none;">As inscrições estão abertas.</div>
+      <div class="post-caption en">Join us on <strong>14 May at 13:00 UTC</strong> for the launch of the Forus Post-2030 Vision Paper. A conversation on what must be defended, demanded, and declined as the world begins to shape what comes after 2030.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Registration link</a><br><br><span class="post-hashtags">#ForusPost2030 #RegisterNow</span></div>
+      <div class="post-caption es" style="display:none;">Únete a nosotros el <strong>14 de mayo a las 13:00 UTC</strong> para el lanzamiento del Vision Paper Post-2030 de Forus. Una conversación sobre lo que debe defenderse, exigirse y rechazarse mientras el mundo comienza a dar forma a lo que viene después de 2030.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Enlace de registro</a><br><br><span class="post-hashtags">#ForusPost2030 #RegístrateAhora</span></div>
+      <div class="post-caption fr" style="display:none;">Rejoignez-nous le <strong>14 mai à 13h00 UTC</strong> pour le lancement du document de vision post-2030 de Forus. Une conversation sur ce qui doit être défendu, exigé et refusé alors que le monde commence à façonner l'après-2030.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Lien d'inscription</a><br><br><span class="post-hashtags">#ForusPost2030 #InscrivezVous</span></div>
+      <div class="post-caption pt" style="display:none;">Junte-se a nós no dia <strong>14 de maio às 13:00 UTC</strong> para o lançamento do Documento de Visão Pós-2030 da Forus. Uma conversa sobre o que deve ser defendido, exigido e recusado enquanto o mundo começa a moldar o que vem depois de 2030.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Link de inscrição</a><br><br><span class="post-hashtags">#ForusPost2030 #InscrevaSe</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">May 8</span><span class="post-type defend">DEFEND</span><span class="post-format">🎬 Quote / video clip</span></div>
+      <div class="post-headline en">As the world begins to shape what comes after 2030, the conversation cannot be limited to institutions alone.</div>
+      <div class="post-headline es" style="display:none;">A medida que el mundo comienza a dar forma a lo que viene después de 2030, la conversación no puede limitarse solo a las instituciones.</div>
+      <div class="post-headline fr" style="display:none;">Alors que le monde commence à façonner l'après-2030, la conversation ne peut pas se limiter aux seules institutions.</div>
+      <div class="post-headline pt" style="display:none;">À medida que o mundo começa a moldar o que vem depois de 2030, a conversa não pode se limitar apenas às instituições.</div>
+      <div class="post-caption en">A credible future framework must be more just, more accountable, and more connected to lived realities.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #GlobalSolidarity</span></div>
+      <div class="post-caption es" style="display:none;">Un marco futuro creíble debe ser más justo, más responsable y más conectado con las realidades vividas.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #SolidaridadGlobal</span></div>
+      <div class="post-caption fr" style="display:none;">Un cadre futur crédible doit être plus juste, plus responsable et plus connecté aux réalités vécues.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #SolidaritéMondiale</span></div>
+      <div class="post-caption pt" style="display:none;">Um quadro futuro crível deve ser mais justo, mais responsável e mais conectado às realidades vividas.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #SolidariedadeGlobal</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">May 11</span><span class="post-type defend">DEFEND</span><span class="post-format">💬 Quote card</span></div>
+      <div class="post-headline en">The next global development framework is already being shaped.</div>
+      <div class="post-headline es" style="display:none;">El próximo marco global de desarrollo ya se está configurando.</div>
+      <div class="post-headline fr" style="display:none;">Le prochain cadre mondial de développement est déjà en train d'être façonné.</div>
+      <div class="post-headline pt" style="display:none;">O próximo quadro global de desenvolvimento já está sendo moldado.</div>
+      <div class="post-caption en">This is the moment to define what must be defended, what must be corrected, and what must not be lost.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #CivilSociety</span></div>
+      <div class="post-caption es" style="display:none;">Este es el momento de definir lo que debe defenderse, lo que debe corregirse y lo que no debe perderse.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #SociedadCivil</span></div>
+      <div class="post-caption fr" style="display:none;">C'est le moment de définir ce qui doit être défendu, ce qui doit être corrigé et ce qui ne doit pas être perdu.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #SociétéCivile</span></div>
+      <div class="post-caption pt" style="display:none;">Este é o momento de definir o que deve ser defendido, o que deve ser corrigido e o que não pode ser perdido.<br><br><span class="post-hashtags">#ForusPost2030 #Post2030 #SociedadeCivil</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">May 11</span><span class="post-type defend">DEFEND</span><span class="post-format">🎠 Carousel</span></div>
+      <div class="post-headline en">What must be defended? (Repeat)</div>
+      <div class="post-headline es" style="display:none;">¿Qué debe defenderse? (Repetición)</div>
+      <div class="post-headline fr" style="display:none;">Que doit-on défendre ? (Répétition)</div>
+      <div class="post-headline pt" style="display:none;">O que deve ser defendido? (Repetição)</div>
+      <div class="post-caption en">Universal rights, civic space, local leadership, multilateralism, leave no one behind. <strong>This is not the moment to step back.</strong><br><br><span class="post-hashtags">#WhatWeDefend #ForusPost2030</span></div>
+      <div class="post-caption es" style="display:none;">Derechos universales, espacio cívico, liderazgo local, multilateralismo, no dejar a nadie atrás. <strong>Este no es el momento de retroceder.</strong><br><br><span class="post-hashtags">#LoQueDefendemos #ForusPost2030</span></div>
+      <div class="post-caption fr" style="display:none;">Droits universels, espace civique, leadership local, multilatéralisme, ne laisser personne de côté. <strong>Ce n'est pas le moment de reculer.</strong><br><br><span class="post-hashtags">#CeQueNousDéfendons #ForusPost2030</span></div>
+      <div class="post-caption pt" style="display:none;">Direitos universais, espaço cívico, liderança local, multilateralismo, não deixar ninguém para trás. <strong>Este não é o momento de recuar.</strong><br><br><span class="post-hashtags">#OQueDefendemos #ForusPost2030</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">May 11</span><span class="post-type demand">DEMAND</span><span class="post-format">🎠 Carousel</span></div>
+      <div class="post-headline en">What must change? (Repeat)</div>
+      <div class="post-headline es" style="display:none;">¿Qué debe cambiar? (Repetición)</div>
+      <div class="post-headline fr" style="display:none;">Que doit changer ? (Répétition)</div>
+      <div class="post-headline pt" style="display:none;">O que deve mudar? (Repetição)</div>
+      <div class="post-caption en">Financing reform, real accountability, meaningful participation, power for local actors.<br><br><span class="post-hashtags">#WhatWeDemand #ForusPost2030</span></div>
+      <div class="post-caption es" style="display:none;">Reforma financiera, rendición de cuentas real, participación significativa, poder para los actores locales.<br><br><span class="post-hashtags">#LoQueExigimos #ForusPost2030</span></div>
+      <div class="post-caption fr" style="display:none;">Réforme financière, véritable responsabilité, participation significative, pouvoir pour les acteurs locaux.<br><br><span class="post-hashtags">#CeQueNousExigeons #ForusPost2030</span></div>
+      <div class="post-caption pt" style="display:none;">Reforma financeira, responsabilização real, participação significativa, poder para os atores locais.<br><br><span class="post-hashtags">#OQueExigimos #ForusPost2030</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">May 11</span><span class="post-type decline">DECLINE</span><span class="post-format">🎠 Carousel</span></div>
+      <div class="post-headline en">What must be declined? (Repeat)</div>
+      <div class="post-headline es" style="display:none;">¿Qué debe rechazarse? (Repetición)</div>
+      <div class="post-headline fr" style="display:none;">Que doit-on refuser ? (Répétition)</div>
+      <div class="post-headline pt" style="display:none;">O que deve ser recusado? (Repetição)</div>
+      <div class="post-caption en">We reject a watered-down framework that sacrifices rights, accountability, or climate ambition.<br><br><span class="post-hashtags">#WhatWeDecline #ForusPost2030</span></div>
+      <div class="post-caption es" style="display:none;">Rechazamos un marco diluido que sacrifique derechos, rendición de cuentas o ambición climática.<br><br><span class="post-hashtags">#LoQueRechazamos #ForusPost2030</span></div>
+      <div class="post-caption fr" style="display:none;">Nous refusons un cadre édulcoré qui sacrifie les droits, la responsabilité ou l'ambition climatique.<br><br><span class="post-hashtags">#CeQueNousRefusons #ForusPost2030</span></div>
+      <div class="post-caption pt" style="display:none;">Recusamos um marco enfraquecido que sacrifique direitos, responsabilização ou ambição climática.<br><br><span class="post-hashtags">#OQueRecusamos #ForusPost2030</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== WEEK 5 ========== -->
+<div id="week5" class="tab-content">
+  <div class="section-title en">📅 Week 5 · May 12–15, 2026</div>
+  <div class="section-title es" style="display:none;">📅 Semana 5 · 12–15 de mayo de 2026</div>
+  <div class="section-title fr" style="display:none;">📅 Semaine 5 · 12–15 mai 2026</div>
+  <div class="section-title pt" style="display:none;">📅 Semana 5 · 12–15 de maio de 2026</div>
+  
+  <div class="week-strategy en"><strong>🚀 Launch Week: It's Today!</strong><br>We close the campaign with the full report launch. We reinforce all key messages, activate the final call for registration and celebrate the 14 May launch with a call to collective action.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Campaign Hub</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Event Registration</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy es" style="display:none;"><strong>🚀 Semana de lanzamiento: ¡Es hoy!</strong><br>Cerramos la campaña con el lanzamiento del informe completo. Reforzamos todos los mensajes clave, activamos la última llamada al registro y celebramos el lanzamiento del 14 de mayo con un llamado a la acción colectiva.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub de Campaña</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Registro del Evento</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy fr" style="display:none;"><strong>🚀 Semaine de lancement : C'est aujourd'hui !</strong><br>Nous clôturons la campagne avec le lancement du rapport complet. Nous renforçons tous les messages clés, activons le dernier appel à l'inscription et célébrons le lancement du 14 mai par un appel à l'action collective.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub Campagne</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Inscription</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+  <div class="week-strategy pt" style="display:none;"><strong>🚀 Semana de lançamento: É hoje!</strong><br>Encerramos a campanha com o lançamento do relatório completo. Reforçamos todas as mensagens-chave, ativamos o último chamado para inscrição e celebramos o lançamento de 14 de maio com um chamado à ação coletiva.<div class="week-links"><a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">🔗 Hub da Campanha</a> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">📅 Inscrição</a> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">🎨 Canva</a></div></div>
+
+  <div class="week-block week5">
+    <div class="week-title en">🚀 COUNTDOWN · LAUNCH DAY · POST-LAUNCH</div>
+    <div class="week-title es" style="display:none;">🚀 CUENTA REGRESIVA · DÍA DEL LANZAMIENTO · POST-LANZAMIENTO</div>
+    <div class="week-title fr" style="display:none;">🚀 COMPTE À REBOURS · JOUR DU LANCEMENT · POST-LANCEMENT</div>
+    <div class="week-title pt" style="display:none;">🚀 CONTAGEM REGRESSIVA · DIA DO LANÇAMENTO · PÓS-LANÇAMENTO</div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">May 12</span><span class="post-type event">COUNTDOWN</span><span class="post-format">⏱️ Short motion / countdown</span></div>
+      <div class="post-headline en">Two days to go.</div>
+      <div class="post-headline es" style="display:none;">Dos días para el lanzamiento.</div>
+      <div class="post-headline fr" style="display:none;">Encore deux jours.</div>
+      <div class="post-headline pt" style="display:none;">Faltam dois dias.</div>
+      <div class="post-caption en">The next global development framework is already being shaped. Join Forus on <strong>14 May, 13:00 UTC</strong>.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Registration link</a><br><br><span class="post-hashtags">#ForusPost2030 #Post2030</span></div>
+      <div class="post-caption es" style="display:none;">El próximo marco global de desarrollo ya se está configurando. Únete a Forus el <strong>14 de mayo a las 13:00 UTC</strong>.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Enlace de registro</a><br><br><span class="post-hashtags">#ForusPost2030 #Post2030</span></div>
+      <div class="post-caption fr" style="display:none;">Le prochain cadre mondial de développement est déjà en train d'être façonné. Rejoignez Forus le <strong>14 mai à 13h00 UTC</strong>.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Lien d'inscription</a><br><br><span class="post-hashtags">#ForusPost2030 #Post2030</span></div>
+      <div class="post-caption pt" style="display:none;">O próximo quadro global de desenvolvimento já está sendo moldado. Junte-se à Forus no dia <strong>14 de maio às 13:00 UTC</strong>.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Link de inscrição</a><br><br><span class="post-hashtags">#ForusPost2030 #Post2030</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">May 13</span><span class="post-type event">REMINDER</span><span class="post-format">📢 Speaker card / reminder</span></div>
+      <div class="post-headline en">Tomorrow.</div>
+      <div class="post-headline es" style="display:none;">Mañana.</div>
+      <div class="post-headline fr" style="display:none;">Demain.</div>
+      <div class="post-headline pt" style="display:none;">Amanhã.</div>
+      <div class="post-caption en">Join the launch of the Forus Post-2030 Vision Paper and help open the conversation on the future of sustainable development beyond 2030.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Registration link</a><br><br><span class="post-hashtags">#ForusPost2030 #Tomorrow</span></div>
+      <div class="post-caption es" style="display:none;">Únete al lanzamiento del Vision Paper Post-2030 de Forus y ayuda a abrir la conversación sobre el futuro del desarrollo sostenible más allá de 2030.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Enlace de registro</a><br><br><span class="post-hashtags">#ForusPost2030 #Mañana</span></div>
+      <div class="post-caption fr" style="display:none;">Rejoignez le lancement du document de vision post-2030 de Forus et aidez à ouvrir la conversation sur l'avenir du développement durable au-delà de 2030.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Lien d'inscription</a><br><br><span class="post-hashtags">#ForusPost2030 #Demain</span></div>
+      <div class="post-caption pt" style="display:none;">Junte-se ao lançamento do Documento de Visão Pós-2030 da Forus e ajude a abrir a conversa sobre o futuro do desenvolvimento sustentável além de 2030.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Link de inscrição</a><br><br><span class="post-hashtags">#ForusPost2030 #Amanhã</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">May 14</span><span class="post-type promo">LAUNCH DAY</span><span class="post-format">🚀 Launch visual</span></div>
+      <div class="post-headline en">Today: the launch of the Forus Post-2030 Vision Paper.</div>
+      <div class="post-headline es" style="display:none;">Hoy: el lanzamiento del Vision Paper Post-2030 de Forus.</div>
+      <div class="post-headline fr" style="display:none;">Aujourd'hui : le lancement du document de vision post-2030 de Forus.</div>
+      <div class="post-headline pt" style="display:none;">Hoje: o lançamento do Documento de Visão Pós-2030 da Forus.</div>
+      <div class="post-caption en">This is not only about what may come after the SDGs. It is about <strong>what must be defended, what must be corrected, and what must not be lost.</strong><br><br>Join us live at 13:00 UTC.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Live link / Registration</a><br><br><span class="post-hashtags">#ForusPost2030 #LaunchDay</span></div>
+      <div class="post-caption es" style="display:none;">Esto no es solo sobre lo que pueda venir después de los ODS. Se trata de <strong>lo que debe defenderse, lo que debe corregirse y lo que no debe perderse.</strong><br><br>Únete a nosotros en vivo a las 13:00 UTC.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Enlace en vivo / Registro</a><br><br><span class="post-hashtags">#ForusPost2030 #DíaDelLanzamiento</span></div>
+      <div class="post-caption fr" style="display:none;">Il ne s'agit pas seulement de ce qui pourrait venir après les ODD. Il s'agit de <strong>ce qui doit être défendu, ce qui doit être corrigé et ce qui ne doit pas être perdu.</strong><br><br>Rejoignez-nous en direct à 13h00 UTC.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Lien direct / Inscription</a><br><br><span class="post-hashtags">#ForusPost2030 #JourDeLancement</span></div>
+      <div class="post-caption pt" style="display:none;">Não se trata apenas do que pode vir depois dos ODS. Trata-se de <strong>o que deve ser defendido, o que deve ser corrigido e o que não pode ser perdido.</strong><br><br>Junte-se a nós ao vivo às 13:00 UTC.<br><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Link ao vivo / Inscrição</a><br><br><span class="post-hashtags">#ForusPost2030 #DiaDoLançamento</span></div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-header"><span class="post-date">May 15</span><span class="post-type defend">FOLLOW-UP</span><span class="post-format">🙏 Thank-you card / recap visual</span></div>
+      <div class="post-headline en">Thank you to everyone who joined the launch.</div>
+      <div class="post-headline es" style="display:none;">Gracias a todos los que se unieron al lanzamiento.</div>
+      <div class="post-headline fr" style="display:none;">Merci à tous ceux qui ont rejoint le lancement.</div>
+      <div class="post-headline pt" style="display:none;">Obrigado a todos que se juntaram ao lançamento.</div>
+      <div class="post-caption en">The conversation does not end here. Read the report, explore the Executive Summary, and stay with us as we take this vision into the road ahead — from HLPF to UNGA and beyond.<br><br>🔗 <a href="https://www.forus-international.org/en/extra/hub/resources-publications?modal_page=pdf&modal_detail_id=forus-post-2030-vision-paper-executive-summary-the-vision-what-we-defend-demand-and-decline" target="_blank">Executive Summary</a><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">Campaign hub / Recording</a><br><br><span class="post-hashtags">#ForusPost2030 #NextSteps #Post2030</span></div>
+      <div class="post-caption es" style="display:none;">La conversación no termina aquí. Lee el informe, explora el Resumen Ejecutivo y quédate con nosotros mientras llevamos esta visión al camino por delante — desde HLPF hasta la Asamblea General de la ONU y más allá.<br><br>🔗 <a href="https://www.forus-international.org/en/extra/hub/resources-publications?modal_page=pdf&modal_detail_id=forus-post-2030-vision-paper-executive-summary-the-vision-what-we-defend-demand-and-decline" target="_blank">Resumen Ejecutivo</a><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">Hub de campaña / Grabación</a><br><br><span class="post-hashtags">#ForusPost2030 #PróximosPasos #Post2030</span></div>
+      <div class="post-caption fr" style="display:none;">La conversation ne s'arrête pas là. Lisez le rapport, explorez le résumé exécutif et restez avec nous alors que nous portons cette vision vers la route à venir — du HLPF à l'Assemblée générale des Nations Unies et au-delà.<br><br>🔗 <a href="https://www.forus-international.org/en/extra/hub/resources-publications?modal_page=pdf&modal_detail_id=forus-post-2030-vision-paper-executive-summary-the-vision-what-we-defend-demand-and-decline" target="_blank">Résumé exécutif</a><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">Hub de campagne / Enregistrement</a><br><br><span class="post-hashtags">#ForusPost2030 #ProchainesÉtapes #Post2030</span></div>
+      <div class="post-caption pt" style="display:none;">A conversa não termina aqui. Leia o relatório, explore o Resumo Executivo e fique conosco enquanto levamos esta visão para o caminho à frente — do HLPF à Assembleia Geral da ONU e além.<br><br>🔗 <a href="https://www.forus-international.org/en/extra/hub/resources-publications?modal_page=pdf&modal_detail_id=forus-post-2030-vision-paper-executive-summary-the-vision-what-we-defend-demand-and-decline" target="_blank">Resumo Executivo</a><br>🔗 <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">Hub da campanha / Gravação</a><br><br><span class="post-hashtags">#ForusPost2030 #PróximosPassos #Post2030</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 3 SCENARIOS TAB ========== -->
+<div id="scenarios" class="tab-content">
+  <div class="section-title en">🔮 Three Possible Futures for Post-2030</div>
+  <div class="section-title es" style="display:none;">🔮 Tres Futuros Posibles para el Post-2030</div>
+  <div class="section-title fr" style="display:none;">🔮 Trois Avenirs Possibles pour l'Après-2030</div>
+  <div class="section-title pt" style="display:none;">🔮 Três Futuros Possíveis para o Pós-2030</div>
+  
+  <div class="scenarios-grid">
+    <div class="scenario-card continuity">
+      <div class="scenario-title">🟢 Continuity</div>
+      <div class="scenario-desc en">An extension of the SDGs with targeted improvements in financing, climate, technology, and local participation — keeping the global framework while refining it.</div>
+      <div class="scenario-desc es" style="display:none;">Una extensión de los ODS con mejoras específicas en financiamiento, clima, tecnología y participación local — manteniendo el marco global mientras se refina.</div>
+      <div class="scenario-desc fr" style="display:none;">Une extension des ODD avec des améliorations ciblées dans le financement, le climat, la technologie et la participation locale — en maintenant le cadre mondial tout en l'affinant.</div>
+      <div class="scenario-desc pt" style="display:none;">Uma extensão dos ODS com melhorias direcionadas em financiamento, clima, tecnologia e participação local — mantendo o quadro global enquanto o refina.</div>
+    </div>
+    <div class="scenario-card reset">
+      <div class="scenario-title">🔵 Reset</div>
+      <div class="scenario-desc en">A more ambitious, justice-driven approach. Focused on structural reforms, stronger accountability, transformative financing, and deeper local engagement.</div>
+      <div class="scenario-desc es" style="display:none;">Un enfoque más ambicioso, impulsado por la justicia. Centrado en reformas estructurales, mayor rendición de cuentas, financiamiento transformador y un compromiso local más profundo.</div>
+      <div class="scenario-desc fr" style="display:none;">Une approche plus ambitieuse, axée sur la justice. Centrée sur les réformes structurelles, une responsabilité accrue, un financement transformateur et un engagement local plus profond.</div>
+      <div class="scenario-desc pt" style="display:none;">Uma abordagem mais ambiciosa, impulsionada pela justiça. Focada em reformas estruturais, responsabilização mais forte, financiamento transformador e engajamento local mais profundo.</div>
+    </div>
+    <div class="scenario-card fragmentation">
+      <div class="scenario-title">🔴 Fragmentation</div>
+      <div class="scenario-desc en">A weaker, more divided scenario shaped by geopolitical tensions and declining trust — putting global cooperation and progress at risk.</div>
+      <div class="scenario-desc es" style="display:none;">Un escenario más débil y dividido, moldeado por tensiones geopolíticas y una confianza decreciente — poniendo en riesgo la cooperación global y el progreso.</div>
+      <div class="scenario-desc fr" style="display:none;">Un scénario plus faible et plus divisé, façonné par les tensions géopolitiques et la confiance déclinante — mettant en danger la coopération mondiale et le progrès.</div>
+      <div class="scenario-desc pt" style="display:none;">Um cenário mais fraco e dividido, moldado por tensões geopolíticas e confiança decrescente — colocando em risco a cooperação global e o progresso.</div>
+    </div>
+  </div>
+  <p style="font-size:16px; color:var(--muted); margin-top:16px;"><strong class="en">Forus' vision is built to stay politically relevant across all three scenarios.</strong><strong class="es" style="display:none;">La visión de Forus está construida para ser políticamente relevante en los tres escenarios.</strong><strong class="fr" style="display:none;">La vision de Forus est conçue pour rester politiquement pertinente dans les trois scénarios.</strong><strong class="pt" style="display:none;">A visão da Forus é construída para permanecer politicamente relevante em todos os três cenários.</strong></p>
+</div>
+
+<!-- ========== RESOURCES TAB ========== -->
+<div id="resources" class="tab-content">
+  <div class="section-title en">🔗 Useful Links & Resources</div>
+  <div class="section-title es" style="display:none;">🔗 Enlaces y Recursos Útiles</div>
+  <div class="section-title fr" style="display:none;">🔗 Liens et Ressources Utiles</div>
+  <div class="section-title pt" style="display:none;">🔗 Links e Recursos Úteis</div>
+  
+  <div class="resources-box">
+    <p><strong>🌐 Campaign hub:</strong> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision" target="_blank">https://www.forus-international.org/en/campaign/forus-post-2030-vision</a></p>
+    <p><strong>📅 Event registration:</strong> <a href="https://www.forus-international.org/en/campaign/forus-post-2030-vision?modal_page=event&modal_detail_id=join-the-launch-of-the-forus-post-2030-vision" target="_blank">Join the launch of the Forus Post-2030 Vision</a></p>
+    <p><strong>🎨 Canva template:</strong> <a href="https://www.canva.com/design/DAHGLqK9epE/AvDH1JdKj0MX4E2LXSQkwQ/edit" target="_blank">https://www.canva.com/design/DAHGLqK9epE/...</a></p>
+    <p><strong>📄 Vision Paper (PDF):</strong> coming soon</p>
+    <p><strong>📋 Executive Summary:</strong> <a href="https://www.forus-international.org/en/extra/hub/resources-publications?modal_page=pdf&modal_detail_id=forus-post-2030-vision-paper-executive-summary-the-vision-what-we-defend-demand-and-decline" target="_blank">Forus Post-2030 Vision Paper - Executive Summary</a></p>
+    <p><strong>✉️ Contact:</strong> <a href="mailto:marie@forus-international.org">marie@forus-international.org</a></p>
+  </div>
+  <div class="hashtags-block">
+    <span>#ForusPost2030</span> <span>#WhatWeDefend</span> <span>#WhatWeDemand</span> <span>#WhatWeDecline</span> <span>#Post2030</span> <span>#CivilSociety</span> <span>#GlobalSolidarity</span> <span>#Accountability</span> <span>#Localisation</span> <span>#SustainableFinance</span>
+  </div>
+</div>
+
+<!-- ========== PODCAST & VIDEO TAB ========== -->
+<div id="media" class="tab-content">
+  <div class="section-title en">🎙️ Podcast & Video Content</div>
+  <div class="section-title es" style="display:none;">🎙️ Podcast y Video</div>
+  <div class="section-title fr" style="display:none;">🎙️ Podcast et Vidéo</div>
+  <div class="section-title pt" style="display:none;">🎙️ Podcast e Vídeo</div>
+  
+  <div class="media-grid">
+    <div class="media-card"><div class="media-icon">🎙️</div><h3 class="en">Podcast</h3><h3 class="es" style="display:none;">Podcast</h3><h3 class="fr" style="display:none;">Podcast</h3><h3 class="pt" style="display:none;">Podcast</h3><p class="en">Episodes exploring the post-2030 debate with civil society voices, experts, and allies.</p><p class="es" style="display:none;">Episodios que exploran el debate post-2030 con voces de la sociedad civil, expertos y aliados.</p><p class="fr" style="display:none;">Épisodes explorant le débat post-2030 avec des voix de la société civile, des experts et des alliés.</p><p class="pt" style="display:none;">Episódios explorando o debate pós-2030 com vozes da sociedade civil, especialistas e aliados.</p><div class="media-placeholder">🎧 Podcast player embed — coming soon</div></div>
+    <div class="media-card"><div class="media-icon">🎬</div><h3 class="en">Video</h3><h3 class="es" style="display:none;">Video</h3><h3 class="fr" style="display:none;">Vidéo</h3><h3 class="pt" style="display:none;">Vídeo</h3><p class="en">Campaign opener, event recordings, and key messages from the vision paper.</p><p class="es" style="display:none;">Apertura de la campaña, grabaciones del evento y mensajes clave del vision paper.</p><p class="fr" style="display:none;">Ouverture de la campagne, enregistrements d'événements et messages clés du document de vision.</p><p class="pt" style="display:none;">Abertura da campanha, gravações do evento e mensagens-chave do documento de visão.</p><div class="media-placeholder">📺 Video gallery / embed — coming soon</div></div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(event && event.target) event.target.classList.add('active');
+}
+
+function setLanguage(lang) {
+  // Update active button
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  if(event && event.target) event.target.classList.add('active');
+  
+  // Hide all language-specific elements first
+  const allLangElements = document.querySelectorAll('.vision-statement, .campaign-subtitle, .section-title, .week-strategy, .week-title, .post-headline, .post-caption, .scenario-desc, .media-card h3, .media-card p, .resources-box p strong, .hashtags-block span, .nav-week1-en, .nav-week1-es, .nav-week1-fr, .nav-week1-pt, .nav-week2-en, .nav-week2-es, .nav-week2-fr, .nav-week2-pt, .nav-week3-en, .nav-week3-es, .nav-week3-fr, .nav-week3-pt, .nav-week4-en, .nav-week4-es, .nav-week4-fr, .nav-week4-pt, .nav-week5-en, .nav-week5-es, .nav-week5-fr, .nav-week5-pt, .nav-scenarios-en, .nav-scenarios-es, .nav-scenarios-fr, .nav-scenarios-pt, .nav-resources-en, .nav-resources-es, .nav-resources-fr, .nav-resources-pt, .nav-media-en, .nav-media-es, .nav-media-fr, .nav-media-pt');
+  
+  allLangElements.forEach(el => {
+    el.style.display = 'none';
+  });
+  
+  // Show selected language
+  document.querySelectorAll(`.${lang}`).forEach(el => {
+    el.style.display = 'block';
+  });
+  document.querySelectorAll(`.nav-week1-${lang}, .nav-week2-${lang}, .nav-week3-${lang}, .nav-week4-${lang}, .nav-week5-${lang}, .nav-scenarios-${lang}, .nav-resources-${lang}, .nav-media-${lang}`).forEach(el => {
+    el.style.display = 'inline-block';
+  });
+  
+  // Handle special cases for elements with language classes
+  document.querySelectorAll(`.vision-statement.${lang}`).forEach(el => el.style.display = 'block');
+  document.querySelectorAll(`.campaign-subtitle.${lang}`).forEach(el => el.style.display = 'block');
+  document.querySelectorAll(`.section-title.${lang}`).forEach(el => el.style.display = 'block');
+  document.querySelectorAll(`.week-strategy.${lang}`).forEach(el => el.style.display = 'block');
+  document.querySelectorAll(`.week-title.${lang}`).forEach(el => el.style.display = 'block');
+  document.querySelectorAll(`.post-headline.${lang}`).forEach(el => el.style.display = 'block');
+  document.querySelectorAll(`.post-caption.${lang}`).forEach(el => el.style.display = 'block');
+  document.querySelectorAll(`.scenario-desc.${lang}`).forEach(el => el.style.display = 'block');
+  document.querySelectorAll(`.media-card h3.${lang}`).forEach(el => el.style.display = 'block');
+  document.querySelectorAll(`.media-card p.${lang}`).forEach(el => el.style.display = 'block');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setLanguage('en');
+});
+</script>
+</body>
+</html>
